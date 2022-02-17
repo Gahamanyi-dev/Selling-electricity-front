@@ -1,49 +1,49 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import MeterDataService from "../services/meter.service";
 
-export default class AddTutorial extends Component {
+export default class AddMeter extends Component {
   constructor(props) {
     super(props);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.saveTutorial = this.saveTutorial.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.onChangeMeterNumber = this.onChangeMeterNumber.bind(this);
+    this.onChangeMoney = this.onChangeMoney.bind(this);
+    this.saveMeter = this.saveMeter.bind(this);
+    this.newMeter = this.newMeter.bind(this);
 
     this.state = {
       id: null,
-      title: "",
-      description: "", 
-      published: false,
-
+      meter_number: "",
+      money: 0,
+      token: "",
+      days:0,
+      remaining_days:0,
       submitted: false
     };
   }
 
-  onChangeTitle(e) {
+  onChangeMeterNumber(e) {
     this.setState({
-      title: e.target.value
+      meter_number: e.target.value
     });
   }
 
-  onChangeDescription(e) {
+  onChangeMoney(e) {
     this.setState({
-      description: e.target.value
+      money: e.target.value
     });
   }
 
-  saveTutorial() {
+  saveMeter() {
     var data = {
-      title: this.state.title,
-      description: this.state.description
+      meter_number: this.state.meter_number,
+      money: this.state.money
     };
 
-    TutorialDataService.create(data)
+    MeterDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
-          title: response.data.title,
-          description: response.data.description,
-          published: response.data.published,
+          meter_number: response.data.meter_number,
+          money: response.data.money,
 
           submitted: true
         });
@@ -54,12 +54,14 @@ export default class AddTutorial extends Component {
       });
   }
 
-  newTutorial() {
+  newMeter() {
     this.setState({
       id: null,
-      title: "",
-      description: "",
-      published: false,
+      meter_number: "",
+      money: 0,
+      token: "",
+      days:0,
+      remaining_days:0,
 
       submitted: false
     });
@@ -71,39 +73,39 @@ export default class AddTutorial extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
+            <button className="btn btn-success" onClick={this.newMeter}>
               Add
             </button>
           </div>
         ) : (
           <div>
             <div className="form-group">
-              <label htmlFor="title">Title</label>
+              <label htmlFor="title">Meter number</label>
               <input
                 type="text"
                 className="form-control"
                 id="title"
                 required
-                value={this.state.title}
-                onChange={this.onChangeTitle}
+                value={this.state.meter_number}
+                onChange={this.onChangeMeterNumber}
                 name="title"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="description">Money</label>
               <input
                 type="text"
                 className="form-control"
                 id="description"
                 required
-                value={this.state.description}
-                onChange={this.onChangeDescription}
+                value={this.state.money}
+                onChange={this.onChangeMoney}
                 name="description"
               />
             </div>
 
-            <button onClick={this.saveTutorial} className="btn btn-success">
+            <button onClick={this.saveMeter} className="btn btn-success">
               Submit
             </button>
           </div>

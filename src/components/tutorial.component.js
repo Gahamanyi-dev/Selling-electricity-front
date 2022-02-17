@@ -1,60 +1,61 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import MeterDataService from "../services/meter.service";
 
-export default class Tutorial extends Component {
+export default class Meter extends Component {
   constructor(props) {
     super(props);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.getTutorial = this.getTutorial.bind(this);
-    this.updatePublished = this.updatePublished.bind(this);
-    this.updateTutorial = this.updateTutorial.bind(this);
-    this.deleteTutorial = this.deleteTutorial.bind(this);
+    this.onChangeMeterNumber = this.onChangeMeterNumber.bind(this);
+    this.onChangeMoney = this.onChangeMoney.bind(this);
+    this.getMeter = this.getMeter.bind(this);
+    this.updateMeter = this.updateMeter.bind(this);
+    this.deleteMeter = this.deleteMeter.bind(this);
 
     this.state = {
-      currentTutorial: {
+      currentMeter: {
         id: null,
-        title: "",
-        description: "",
-        published: false
+        meter_number: "",
+        money: 0,
+        token: "",
+        days:0,
+        remaining_days:0
       },
       message: ""
     };
   }
 
   componentDidMount() {
-    this.getTutorial(this.props.match.params.id);
+    this.getMeter(this.props.match.params.id);
   }
 
-  onChangeTitle(e) {
-    const title = e.target.value;
+  onChangeMeterNumber(e) {
+    const meterNumber = e.target.value;
 
     this.setState(function(prevState) {
       return {
-        currentTutorial: {
-          ...prevState.currentTutorial,
-          title: title
+        currentMeter: {
+          ...prevState.currentMeter,
+          meterNumber: meterNumber
         }
       };
     });
   }
 
-  onChangeDescription(e) {
-    const description = e.target.value;
+  onChangeMoney(e) {
+    const money = e.target.value;
     
     this.setState(prevState => ({
-      currentTutorial: {
-        ...prevState.currentTutorial,
-        description: description
+      currentMeter: {
+        ...prevState.currentMeter,
+        money: money
       }
     }));
   }
 
-  getTutorial(id) {
-    TutorialDataService.get(id)
+  getMeter(id) {
+    MeterDataService.get(id)
       .then(response => {
         this.setState({
-          currentTutorial: response.data
+          currentMeter: response.data
         });
         console.log(response.data);
       })
@@ -63,38 +64,15 @@ export default class Tutorial extends Component {
       });
   }
 
-  updatePublished(status) {
-    var data = {
-      id: this.state.currentTutorial.id,
-      title: this.state.currentTutorial.title,
-      description: this.state.currentTutorial.description,
-      published: status
-    };
-
-    TutorialDataService.update(this.state.currentTutorial.id, data)
-      .then(response => {
-        this.setState(prevState => ({
-          currentTutorial: {
-            ...prevState.currentTutorial,
-            published: status
-          }
-        }));
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
-
-  updateTutorial() {
-    TutorialDataService.update(
-      this.state.currentTutorial.id,
-      this.state.currentTutorial
+  updateMeter() {
+    MeterDataService.update(
+      this.state.currentMeter.id,
+      this.state.currentMeter
     )
       .then(response => {
         console.log(response.data);
         this.setState({
-          message: "The tutorial was updated successfully!"
+          message: "The meter was updated successfully!"
         });
       })
       .catch(e => {
@@ -102,11 +80,11 @@ export default class Tutorial extends Component {
       });
   }
 
-  deleteTutorial() {    
-    TutorialDataService.delete(this.state.currentTutorial.id)
+  deleteMeter() {    
+    MeterDataService.delete(this.state.currentMeter.id)
       .then(response => {
         console.log(response.data);
-        this.props.history.push('/tutorials')
+        this.props.history.push('/meters')
       })
       .catch(e => {
         console.log(e);
@@ -114,13 +92,13 @@ export default class Tutorial extends Component {
   }
 
   render() {
-    const { currentTutorial } = this.state;
+    const { currentMeter } = this.state;
 
     return (
       <div>
-        {currentTutorial ? (
+        {currentMeter ? (
           <div className="edit-form">
-            <h4>Tutorial</h4>
+            <h4>Meter</h4>
             <form>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
@@ -128,7 +106,7 @@ export default class Tutorial extends Component {
                   type="text"
                   className="form-control"
                   id="title"
-                  value={currentTutorial.title}
+                  value={currentMeter.title}
                   onChange={this.onChangeTitle}
                 />
               </div>
@@ -138,7 +116,7 @@ export default class Tutorial extends Component {
                   type="text"
                   className="form-control"
                   id="description"
-                  value={currentTutorial.description}
+                  value={currentMeter.description}
                   onChange={this.onChangeDescription}
                 />
               </div>
@@ -147,11 +125,11 @@ export default class Tutorial extends Component {
                 <label>
                   <strong>Status:</strong>
                 </label>
-                {currentTutorial.published ? "Published" : "Pending"}
+                {currentMeter.published ? "Published" : "Pending"}
               </div>
             </form>
 
-            {currentTutorial.published ? (
+            {currentMeter.published ? (
               <button
                 className="badge badge-primary mr-2"
                 onClick={() => this.updatePublished(false)}
@@ -169,7 +147,7 @@ export default class Tutorial extends Component {
 
             <button
               className="badge badge-danger mr-2"
-              onClick={this.deleteTutorial}
+              onClick={this.deleteMeter}
             >
               Delete
             </button>
@@ -177,7 +155,7 @@ export default class Tutorial extends Component {
             <button
               type="submit"
               className="badge badge-success"
-              onClick={this.updateTutorial}
+              onClick={this.updateMeter}
             >
               Update
             </button>
@@ -186,7 +164,7 @@ export default class Tutorial extends Component {
         ) : (
           <div>
             <br />
-            <p>Please click on a Tutorial...</p>
+            <p>Please click on a meter...</p>
           </div>
         )}
       </div>

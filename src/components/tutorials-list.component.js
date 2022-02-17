@@ -1,42 +1,42 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import MeterDataService from "../services/meter.service";
 import { Link } from "react-router-dom";
 
-export default class TutorialsList extends Component {
+export default class MetersList extends Component {
   constructor(props) {
     super(props);
-    this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.onChangeSearchToken = this.onChangeSearchToken.bind(this);
+    this.retrieveMeters = this.retrieveMeters.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveTutorial = this.setActiveTutorial.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
-    this.searchTitle = this.searchTitle.bind(this);
+    this.setActiveMeter = this.setActiveMeter.bind(this);
+    this.removeAllMeters = this.removeAllMeters.bind(this);
+    this.searchToken = this.searchToken.bind(this);
 
     this.state = {
-      tutorials: [],
-      currentTutorial: null,
+      meters: [],
+      curentMeter: null,
       currentIndex: -1,
-      searchTitle: ""
+      searchToken: ""
     };
   }
 
   componentDidMount() {
-    this.retrieveTutorials();
+    this.retrieveMeters();
   }
 
-  onChangeSearchTitle(e) {
-    const searchTitle = e.target.value;
+  onChangeSearchToken(e) {
+    const searchToken = e.target.value;
 
     this.setState({
-      searchTitle: searchTitle
+      searchToken: searchToken
     });
   }
 
-  retrieveTutorials() {
-    TutorialDataService.getAll()
+  retrieveMeters() {
+    MeterDataService.getAll()
       .then(response => {
         this.setState({
-          tutorials: response.data
+          meters: response.data
         });
         console.log(response.data);
       })
@@ -46,22 +46,22 @@ export default class TutorialsList extends Component {
   }
 
   refreshList() {
-    this.retrieveTutorials();
+    this.retrieveMeters();
     this.setState({
-      currentTutorial: null,
+      curentMeter: null,
       currentIndex: -1
     });
   }
 
-  setActiveTutorial(tutorial, index) {
+  setActiveMeter(meter, index) {
     this.setState({
-      currentTutorial: tutorial,
+      curentMeter: meter,
       currentIndex: index
     });
   }
-
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  
+  removeAllMeters() {
+    MeterDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -71,16 +71,16 @@ export default class TutorialsList extends Component {
       });
   }
 
-  searchTitle() {
+  searchToken() {
     this.setState({
-      currentTutorial: null,
+      curentMeter: null,
       currentIndex: -1
     });
 
-    TutorialDataService.findByTitle(this.state.searchTitle)
+    MeterDataService.getByToken(this.state.searchToken)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          meters: response.data
         });
         console.log(response.data);
       })
@@ -90,7 +90,7 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex } = this.state;
+    const { searchToken, meters, curentMeter, currentIndex } = this.state;
 
     return (
       <div className="list row">
@@ -100,14 +100,14 @@ export default class TutorialsList extends Component {
               type="text"
               className="form-control"
               placeholder="Search by title"
-              value={searchTitle}
-              onChange={this.onChangeSearchTitle}
+              value={searchToken}
+              onChange={this.onChangeSearchToken}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                onClick={this.searchTitle}
+                onClick={this.searchToken}
               >
                 Search
               </button>
@@ -115,56 +115,56 @@ export default class TutorialsList extends Component {
           </div>
         </div>
         <div className="col-md-6">
-          <h4>Tutorials List</h4>
+          <h4>Meters List</h4>
 
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {meters &&
+              meters.map((meter, index) => (
                 <li
                   className={
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveTutorial(tutorial, index)}
+                  onClick={() => this.setActiveMeter(meter, index)}
                   key={index}
                 >
-                  {tutorial.title}
+                  {meter.meter_number}
                 </li>
               ))}
           </ul>
 
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllMeters}
           >
             Remove All
           </button>
         </div>
         <div className="col-md-6">
-          {currentTutorial ? (
+          {curentMeter ? (
             <div>
-              <h4>Tutorial</h4>
+              <h4>Meters</h4>
               <div>
                 <label>
-                  <strong>Title:</strong>
+                  <strong>Meter number:</strong>
                 </label>{" "}
-                {currentTutorial.title}
+                {curentMeter.meter_number}
               </div>
               <div>
                 <label>
-                  <strong>Description:</strong>
+                  <strong>Money:</strong>
                 </label>{" "}
-                {currentTutorial.description}
+                {curentMeter.money}
               </div>
               <div>
                 <label>
-                  <strong>Status:</strong>
+                  <strong>Token:</strong>
                 </label>{" "}
-                {currentTutorial.published ? "Published" : "Pending"}
+                {curentMeter.token}
               </div>
 
               <Link
-                to={"/tutorials/" + currentTutorial.id}
+                to={"/tutorials/" + curentMeter.id}
                 className="badge badge-warning"
               >
                 Edit
