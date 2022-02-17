@@ -101,7 +101,7 @@ export default class Meter extends Component {
             <h4>Meter</h4>
             <form>
               <div className="form-group">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Meter number</label>
                 <input
                   type="text"
                   className="form-control"
@@ -111,7 +111,7 @@ export default class Meter extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="description">Description</label>
+                <label htmlFor="description">Money</label>
                 <input
                   type="text"
                   className="form-control"
@@ -125,25 +125,9 @@ export default class Meter extends Component {
                 <label>
                   <strong>Status:</strong>
                 </label>
-                {currentMeter.published ? "Published" : "Pending"}
+                {/* {currentMeter.published ? "Published" : "Pending"} */}
               </div>
             </form>
-
-            {currentMeter.published ? (
-              <button
-                className="badge badge-primary mr-2"
-                onClick={() => this.updatePublished(false)}
-              >
-                UnPublish
-              </button>
-            ) : (
-              <button
-                className="badge badge-primary mr-2"
-                onClick={() => this.updatePublished(true)}
-              >
-                Publish
-              </button>
-            )}
 
             <button
               className="badge badge-danger mr-2"
