@@ -66,13 +66,13 @@ export default class Meter extends Component {
 
   updateMeter() {
     MeterDataService.update(
-      this.state.currentMeter.id,
+      this.state.currentMeter._id,
       this.state.currentMeter
     )
       .then(response => {
         console.log(response.data);
         this.setState({
-          message: "The meter was updated successfully!"
+          message: `The meter was updated successfully!\n Token: ${response.data.data.token.token}\ndays: ${response.data.data.days}`
         });
       })
       .catch(e => {
@@ -90,6 +90,7 @@ export default class Meter extends Component {
         console.log(e);
       });
   }
+  
 
   render() {
     const { currentMeter } = this.state;
@@ -106,18 +107,18 @@ export default class Meter extends Component {
                   type="text"
                   className="form-control"
                   id="title"
-                  value={currentMeter.title}
-                  onChange={this.onChangeTitle}
+                  value={currentMeter.meter_number}
+                  onChange={this.onChangeMeterNumber}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="description">Money</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="description"
-                  value={currentMeter.description}
-                  onChange={this.onChangeDescription}
+                  value={currentMeter.money}
+                  onChange={this.onChangeMoney}
                 />
               </div>
 
@@ -141,7 +142,7 @@ export default class Meter extends Component {
               className="badge badge-success"
               onClick={this.updateMeter}
             >
-              Update
+              buy
             </button>
             <p>{this.state.message}</p>
           </div>

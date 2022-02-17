@@ -72,7 +72,7 @@ export default class AddMeter extends Component {
       <div className="submit-form">
         {this.state.submitted ? (
           <div>
-            <h4>You submitted successfully!</h4>
+            <h4 data-testid="success_heading">You submitted successfully!</h4>
             <button className="btn btn-success" onClick={this.newMeter}>
               Add
             </button>
@@ -82,6 +82,7 @@ export default class AddMeter extends Component {
             <div className="form-group">
               <label htmlFor="title">Meter number</label>
               <input
+              data-testid="meter_input"
                 type="text"
                 className="form-control"
                 id="title"
@@ -95,6 +96,7 @@ export default class AddMeter extends Component {
             <div className="form-group">
               <label htmlFor="description">Money</label>
               <input
+              data-testid="money_input"
                 type="text"
                 className="form-control"
                 id="description"

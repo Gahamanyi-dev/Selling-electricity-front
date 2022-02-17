@@ -14,6 +14,7 @@ class MeterDataService {
   }
 
   update(id, data) {
+    console.log({id,data})
     return http.put(`/meters/${id}`, data);
   }
 

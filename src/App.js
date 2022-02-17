@@ -3,9 +3,9 @@ import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import AddTutorial from "./components/add-tutorial.component";
-import Tutorial from "./components/tutorial.component";
-import TutorialsList from "./components/tutorials-list.component";
+import AddTutorial from "./components/buy-token.component";
+import Tutorial from "./components/meter.component";
+import TutorialsList from "./components/meters-list.component";
 
 class App extends Component {
   render() {
@@ -18,12 +18,17 @@ class App extends Component {
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/tutorials"} className="nav-link">
-                Electricity
+                Meters
               </Link>
             </li>
             <li className="nav-item">
               <Link to={"/add"} className="nav-link">
-                Add
+                Buy
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/token"} className="nav-link">
+                token
               </Link>
             </li>
           </div>
@@ -34,6 +39,7 @@ class App extends Component {
             <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
             <Route exact path="/add" component={AddTutorial} />
             <Route path="/tutorials/:id" component={Tutorial} />
+            <Route path="/token" component={Tutorial} />
           </Switch>
         </div>
       </div>

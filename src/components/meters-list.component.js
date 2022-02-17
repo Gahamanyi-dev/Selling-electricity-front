@@ -116,11 +116,12 @@ export default class MetersList extends Component {
         </div>
         <div className="col-md-6">
           <h4>Meters List</h4>
-
+<div>
           <ul className="list-group">
-            {meters &&
-              meters.map((meter, index) => (
+            {/* {meters && */}
+              {meters.map((meter, index) => (
                 <li
+                data-testid={`meter-${index}`}
                   className={
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
@@ -132,7 +133,7 @@ export default class MetersList extends Component {
                 </li>
               ))}
           </ul>
-
+          </div>
           <button
             className="m-3 btn btn-sm btn-danger"
             onClick={this.removeAllMeters}
@@ -156,24 +157,36 @@ export default class MetersList extends Component {
                 </label>{" "}
                 {curentMeter.money}
               </div>
+              {/* {curentMeter.remaining_days !== 0? ( */}
+  {/* <div>
+  <label>
+    <strong>Token:</strong>
+  </label>{" "}
+  {curentMeter.token.token}
+</div> */}
+              {/* ):null} */}
+            
               <div>
                 <label>
-                  <strong>Token:</strong>
+                  <strong>Remaining days:</strong>
                 </label>{" "}
-                {curentMeter.token}
+                {curentMeter.remaining_days}
               </div>
-
-              <Link
-                to={"/tutorials/" + curentMeter.id}
+{curentMeter.remaining_days === 0?(
+  <Link
+                to={"/tutorials/" + curentMeter._id}
                 className="badge badge-warning"
               >
-                Edit
+                buy token
               </Link>
+):null
+}
+              
             </div>
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p data-testid="please_click">Please click on a meter...</p>
             </div>
           )}
         </div>
